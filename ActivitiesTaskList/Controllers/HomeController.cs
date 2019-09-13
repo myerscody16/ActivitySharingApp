@@ -137,14 +137,20 @@ namespace ActivitiesTaskList.Controllers
         [HttpPost]
         public IActionResult Update(Activities updatedActivity)
         {
-            if(ModelState.IsValid)
+            var found = _context.Activities.Find(updatedActivity.Id);
+            if (ModelState.IsValid)
             {
-                _context.Entry(updatedActivity).State = EntityState.Modified;
-                _context.Update(updatedActivity);
+                found.Title = updatedActivity.Title;
+                found.Location = updatedActivity.Location;
+                found.Date = updatedActivity.Date;
+                found.Cost = updatedActivity.Cost;
+                found.Description = updatedActivity.Description;
+                _context.Entry(found).State = EntityState.Modified;
+                _context.Update(found);
                 _context.SaveChanges();
             }
 
-            return View("SavedActivities");
+            return RedirectToAction("SavedActivities");
         }
     }
 }
