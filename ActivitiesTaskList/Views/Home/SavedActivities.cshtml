@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ActivitiesTaskList.Models.Activities>
 
 @{
-    ViewData["Title"] = "Results";
+    ViewData["Title"] = "SavedActivities";
 }
 
-<h1>Results</h1>
+<h1>Saved Activities</h1>
 
 @*<p>
     <a asp-action="Create">Create New</a>
@@ -27,7 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cost)
             </th>
-          
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedByNavigation)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -51,7 +53,6 @@
             </td>
             
             <td>
-                <a asp-action="SavedToList" asp-route-id="@item.Id">Save</a> |
                 <a asp-action="DeleteActivity" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

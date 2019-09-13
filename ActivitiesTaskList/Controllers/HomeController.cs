@@ -26,6 +26,7 @@ namespace ActivitiesTaskList.Controllers
             apikey = _configuration.GetSection("Appconfiguration")["APIkeyvalue"];
             listActivities = _context.Activities.ToList();
         }
+        #region Crud
         [AllowAnonymous]
         public IActionResult Index()
         {
@@ -35,7 +36,7 @@ namespace ActivitiesTaskList.Controllers
         public IActionResult Results(string query)
 
         {
-           
+
             var result = new List<Activities>();
             foreach (var activity in listActivities)
             {
@@ -57,6 +58,7 @@ namespace ActivitiesTaskList.Controllers
             newActivity.CreatedBy = Id;
             if (ModelState.IsValid)
             {
+                _context.UserToActivity.Add(new UserToActivity() { ActivityId = newActivity.Id, UserId = Id });
                 _context.Activities.Add(newActivity);
                 _context.SaveChanges();
             }
@@ -68,7 +70,7 @@ namespace ActivitiesTaskList.Controllers
         {
             var found = _context.Activities.Find(Id);
             var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
-           
+
             if (found.CreatedBy == currentUser.Id)
             {
                 _context.Activities.Remove(found);
@@ -76,6 +78,33 @@ namespace ActivitiesTaskList.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+        #endregion
+
+        public IActionResult SavedToList(int Id)
+        {
+            var currentUser = _context.AspNetUsers.First(c => c.UserName == User.Identity.Name);
+            _context.UserToActivity.Add(new UserToActivity() { ActivityId = Id, UserId = currentUser.Id });
+            _context.SaveChanges();
+
+
+            return RedirectToAction("SavedActivities");
+        }
+        public IActionResult SavedActivities()
+        {
+            var currentUser = _context.AspNetUsers.First(c => c.UserName == User.Identity.Name);
+            var savedActivities = _context.UserToActivity.Where(u => u.UserId == currentUser.Id).ToList();
+            List<Activities> acts = new List<Activities>();
+
+            foreach (var item in savedActivities)
+            {
+                var act = _context.Activities.First(a => a.Id == item.ActivityId);
+                if (act != null)
+                {
+                    acts.Add(act);
+                }
+            }
+            return View(acts);
         }
         //public IActionResult Update()
         //{
