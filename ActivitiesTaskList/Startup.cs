@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using ActivitiesTaskList.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ActivitiesTaskList.Models;
 
 namespace ActivitiesTaskList
 {
@@ -34,6 +35,9 @@ namespace ActivitiesTaskList
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddDbContext<SharedActivityDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

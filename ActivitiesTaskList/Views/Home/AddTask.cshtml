@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "AddTask";
+}
+
+<h1>Add Task</h1>
+
+<form asp-controller="Home" asp-action="AddActivity" method="post">
+    Date: <input type="date" name="Date" placeholder="Date of event" required />
+    Name of event: <input type="text" name="Title" placeholder="Name of event" required />
+    Description: <input type="text" name="Description" placeholder="Description of event" required />
+    Location: <input type="text" name="Location" placeholder="Location" required />
+    Cost: <input type="number" name="Cost" placeholder="Cost of event per person" required />
+    <input type="submit" value="Add event" />
+</form>
