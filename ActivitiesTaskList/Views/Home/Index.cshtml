@@ -2,5 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-Nuts
+<form asp-action="Results" asp-controller="Home" method="post">
+    Search: <input type="text" name="query" value="" />
+    <input type="submit" value="Search" />
+</form>

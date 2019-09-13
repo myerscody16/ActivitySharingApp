@@ -8,12 +8,14 @@ using ActivitiesTaskList.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
 
 namespace ActivitiesTaskList.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
+        List<Activities> listActivities;
         private readonly string apikey;
         private readonly SharedActivityDbContext _context;
         private readonly IConfiguration _configuration;
@@ -22,37 +24,24 @@ namespace ActivitiesTaskList.Controllers
             _context = context;
             _configuration = configuration;
             apikey = _configuration.GetSection("Appconfiguration")["APIkeyvalue"];
+            listActivities = _context.Activities.ToList();
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
-        //public IActionResult ActivityList()
-        //{
-        //    string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    List<> databaseList = _context..ToList();
 
-        //    List<> newTask = new List<>();
-        //    AspNetUsers thisUser = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First();
+        public IActionResult Results(string query)
 
-        //    foreach (var item in databaseList)
-        //    {
-        //        if (id == item.UserId)
-        //        {
-        //            newTask.Add(item);
-        //        }
-        //    }
-        //    return View(newTask);
-        //}
-        public IActionResult AddTask()
         {
+
             return View();
         }
 
-        [HttpPost]
         public IActionResult AddTask(Activities newActivity)
         {
-            string Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string Id = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First().Id;
             newActivity.CreatedBy = Id;
             if (ModelState.IsValid)
             {
