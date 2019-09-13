@@ -35,11 +35,23 @@ namespace ActivitiesTaskList.Controllers
         public IActionResult Results(string query)
 
         {
-
+           
+            var result = new List<Activities>();
+            foreach (var activity in listActivities)
+            {
+                if (activity.Title.ToLower().Contains(query.ToLower()) && !result.Contains(activity))
+                {
+                    result.Add(activity);
+                }
+            }
+            return View(result);
+        }
+        public IActionResult AddActivity()
+        {
             return View();
         }
-
-        public IActionResult AddTask(Activities newActivity)
+        [HttpPost]
+        public IActionResult AddActivity(Activities newActivity)
         {
             string Id = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First().Id;
             newActivity.CreatedBy = Id;
@@ -51,17 +63,20 @@ namespace ActivitiesTaskList.Controllers
 
             return RedirectToAction("Index");
         }
-        //public IActionResult Delete(int Id)
-        //{
-        //    found = _context.TaskList.Find(Id);
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context..Remove(found);
-        //        _context.SaveChanges();
-        //    }
 
-        //    return RedirectToAction("");
-        //}
+        public IActionResult DeleteActivity(int Id)
+        {
+            var found = _context.Activities.Find(Id);
+            var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
+           
+            if (found.CreatedBy == currentUser.Id)
+            {
+                _context.Activities.Remove(found);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
         //public IActionResult Update()
         //{
         //    found = _context..Find(.UserId);
