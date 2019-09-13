@@ -12079,27 +12079,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\myers\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Users\\JoshB\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\myers\\source\\repos\\ActivitiesTaskList\\ActivitiesTaskList\\ActivitiesTaskList.csproj",
+      "projectUniqueName": "C:\\Users\\JoshB\\OneDrive\\NewDemoDayProject\\ActivitySharingApp\\ActivitiesTaskList\\ActivitiesTaskList.csproj",
       "projectName": "ActivitiesTaskList",
-      "projectPath": "C:\\Users\\myers\\source\\repos\\ActivitiesTaskList\\ActivitiesTaskList\\ActivitiesTaskList.csproj",
-      "packagesPath": "C:\\Users\\myers\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\myers\\source\\repos\\ActivitiesTaskList\\ActivitiesTaskList\\obj\\",
+      "projectPath": "C:\\Users\\JoshB\\OneDrive\\NewDemoDayProject\\ActivitySharingApp\\ActivitiesTaskList\\ActivitiesTaskList.csproj",
+      "packagesPath": "C:\\Users\\JoshB\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\JoshB\\OneDrive\\NewDemoDayProject\\ActivitySharingApp\\ActivitiesTaskList\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\myers\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\JoshB\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
