@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ActivitiesTaskList.Controllers
 {
@@ -106,20 +107,44 @@ namespace ActivitiesTaskList.Controllers
             }
             return View(acts);
         }
-        //public IActionResult Update()
-        //{
-        //    found = _context..Find(.UserId);
-        //    if (ModelState.IsValid && found != null)
-        //    {
-        //        found.Complete = "yes";
+        public IActionResult DeleteActivityFromUser(int Id)
+        {
+            var found = _context.UserToActivity.Find(Id);
+            var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
 
-        //        _context.Entry().State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        //        _context.Update(found);
-        //        _context.SaveChanges();
-        //    }
+            if (found.ActivityId == Id && found.UserId == currentUser.Id)
+            {
+                _context.UserToActivity.Remove(found);
+                _context.SaveChanges();
+            }
 
-        //    return RedirectToAction("");
+            return RedirectToAction("SavedActivities");
+        }
+        public IActionResult Update(int Id)
+        {
+            var found = _context.Activities.Find(Id);
+            var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
 
-        //}
+            if (found.Id == Id && found.CreatedBy == currentUser.Id)
+            {
+                return View(found);
+            }
+            else
+            {
+                return View("InvalidCredentials");
+            }
+        }
+        [HttpPost]
+        public IActionResult Update(Activities updatedActivity)
+        {
+            if(ModelState.IsValid)
+            {
+                _context.Entry(updatedActivity).State = EntityState.Modified;
+                _context.Update(updatedActivity);
+                _context.SaveChanges();
+            }
+
+            return View("SavedActivities");
+        }
     }
 }
