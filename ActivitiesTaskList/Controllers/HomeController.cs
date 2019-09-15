@@ -59,8 +59,8 @@ namespace ActivitiesTaskList.Controllers
             newActivity.CreatedBy = Id;
             if (ModelState.IsValid)
             {
-                _context.UserToActivity.Add(new UserToActivity() { ActivityId = newActivity.Id, UserId = Id });
                 _context.Activities.Add(newActivity);
+                _context.UserToActivity.Add(new UserToActivity() { ActivityId = newActivity.Id, UserId = Id });
                 _context.SaveChanges();
             }
 

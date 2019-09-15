@@ -63,7 +63,7 @@ namespace ActivitiesTaskList.Models
                     .WithMany(p => p.Activities)
                     .HasForeignKey(d => d.CreatedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Activitie__Creat__6477ECF3");
+                    .HasConstraintName("FK__Activitie__Creat__619B8048");
             });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
@@ -193,13 +193,13 @@ namespace ActivitiesTaskList.Models
                     .WithMany(p => p.UserToActivity)
                     .HasForeignKey(d => d.ActivityId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToAct__Activ__693CA210");
+                    .HasConstraintName("FK__UserToAct__Activ__6FE99F9F");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserToActivity)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToAct__UserI__6A30C649");
+                    .HasConstraintName("FK__UserToAct__UserI__70DDC3D8");
             });
         }
     }
