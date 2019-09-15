@@ -12,12 +12,10 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace ActivitiesTaskList
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            // Find your Account Sid and Token at twilio.com/console
-            // DANGER! This is insecure. See http://twil.io/secure
             const string accountSid = "ACa789c5fec567f04e0ab72683617dd828";
             const string authToken = "4d148282e12613c36b8500584f592976";
 
@@ -30,6 +28,12 @@ namespace ActivitiesTaskList
             );
 
             Console.WriteLine(message.Sid);
+            CreateWebHostBuilder(args).Build().Run();
         }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
+        
     }
 }
