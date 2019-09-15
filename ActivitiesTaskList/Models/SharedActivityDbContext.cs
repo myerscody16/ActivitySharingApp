@@ -25,6 +25,7 @@ namespace ActivitiesTaskList.Models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
         public virtual DbSet<UserToActivity> UserToActivity { get; set; }
+        public virtual DbSet<UserToUser> UserToUser { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -200,6 +201,31 @@ namespace ActivitiesTaskList.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__UserToAct__UserI__70DDC3D8");
+            });
+
+            modelBuilder.Entity<UserToUser>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.FriendId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.Friend)
+                    .WithMany(p => p.UserToUserFriend)
+                    .HasForeignKey(d => d.FriendId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserToUse__Frien__74AE54BC");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserToUserUser)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserToUse__UserI__73BA3083");
             });
         }
     }
