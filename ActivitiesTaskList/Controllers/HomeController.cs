@@ -109,15 +109,13 @@ namespace ActivitiesTaskList.Controllers
         }
         public IActionResult DeleteActivityFromUser(int Id)
         {
-            var found = _context.UserToActivity.Find(Id);
+            var found = _context.UserToActivity.First(u => u.ActivityId == Id);
             var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
-
             if (found.ActivityId == Id && found.UserId == currentUser.Id)
             {
                 _context.UserToActivity.Remove(found);
                 _context.SaveChanges();
             }
-
             return RedirectToAction("SavedActivities");
         }
         public IActionResult Update(int Id)
