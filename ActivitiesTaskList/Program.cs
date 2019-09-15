@@ -22,7 +22,7 @@ namespace ActivitiesTaskList
             TwilioClient.Init(accountSid, authToken);
 
             var message = MessageResource.Create(
-                body: "Join Earth's mightiest heroes. Like Kevin Bacon.",
+                body: "It worked!!!",
                 from: new Twilio.Types.PhoneNumber("+13134665096"),
                 to: new Twilio.Types.PhoneNumber("+12485080655")
             );
