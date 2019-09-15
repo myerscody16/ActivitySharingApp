@@ -13,6 +13,8 @@ namespace ActivitiesTaskList.Models
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
             UserToActivity = new HashSet<UserToActivity>();
+            UserToUserFriend = new HashSet<UserToUser>();
+            UserToUserUser = new HashSet<UserToUser>();
         }
 
         public string Id { get; set; }
@@ -37,5 +39,7 @@ namespace ActivitiesTaskList.Models
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual ICollection<UserToActivity> UserToActivity { get; set; }
+        public virtual ICollection<UserToUser> UserToUserFriend { get; set; }
+        public virtual ICollection<UserToUser> UserToUserUser { get; set; }
     }
 }
