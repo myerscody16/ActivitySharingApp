@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Twilio" Version="5.32.0" />
+    <PackageReference Include="Twilio.AspNet.Mvc" Version="5.20.1" />
   </ItemGroup>
 
 </Project>
