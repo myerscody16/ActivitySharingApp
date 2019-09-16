@@ -1,0 +1,3 @@
+﻿CREATE TABLE NotificationList (Id INT PRIMARY KEY IDENTITY(1,1),
+ActivityId INT FOREIGN KEY REFERENCES Activities(Id),
+PhoneNumber NVARCHAR(MAX))

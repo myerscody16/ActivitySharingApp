@@ -24,6 +24,7 @@ namespace ActivitiesTaskList.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
+        public virtual DbSet<NotificationList> NotificationList { get; set; }
         public virtual DbSet<UserToActivity> UserToActivity { get; set; }
         public virtual DbSet<UserToUser> UserToUser { get; set; }
 
@@ -32,7 +33,7 @@ namespace ActivitiesTaskList.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SqlExpress;Database=SharedActivityDb;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=SharedActivityDb;Trusted_Connection=True;");
             }
         }
 
@@ -64,7 +65,7 @@ namespace ActivitiesTaskList.Models
                     .WithMany(p => p.Activities)
                     .HasForeignKey(d => d.CreatedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Activitie__Creat__619B8048");
+                    .HasConstraintName("FK__Activitie__Creat__5EBF139D");
             });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
@@ -184,6 +185,14 @@ namespace ActivitiesTaskList.Models
                     .HasMaxLength(10);
             });
 
+            modelBuilder.Entity<NotificationList>(entity =>
+            {
+                entity.HasOne(d => d.Activity)
+                    .WithMany(p => p.NotificationList)
+                    .HasForeignKey(d => d.ActivityId)
+                    .HasConstraintName("FK__Notificat__Activ__02FC7413");
+            });
+
             modelBuilder.Entity<UserToActivity>(entity =>
             {
                 entity.Property(e => e.UserId)
@@ -194,13 +203,13 @@ namespace ActivitiesTaskList.Models
                     .WithMany(p => p.UserToActivity)
                     .HasForeignKey(d => d.ActivityId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToAct__Activ__6FE99F9F");
+                    .HasConstraintName("FK__UserToAct__Activ__6383C8BA");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserToActivity)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToAct__UserI__70DDC3D8");
+                    .HasConstraintName("FK__UserToAct__UserI__6477ECF3");
             });
 
             modelBuilder.Entity<UserToUser>(entity =>
@@ -219,13 +228,13 @@ namespace ActivitiesTaskList.Models
                     .WithMany(p => p.UserToUserFriend)
                     .HasForeignKey(d => d.FriendId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToUse__Frien__74AE54BC");
+                    .HasConstraintName("FK__UserToUse__Frien__70DDC3D8");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserToUserUser)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToUse__UserI__73BA3083");
+                    .HasConstraintName("FK__UserToUse__UserI__6FE99F9F");
             });
         }
     }

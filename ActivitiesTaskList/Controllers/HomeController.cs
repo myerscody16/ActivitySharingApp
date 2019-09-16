@@ -87,10 +87,40 @@ namespace ActivitiesTaskList.Controllers
             return RedirectToAction("Index");
         }
         #endregion
+        [HttpGet]
+        public IActionResult AddPhoneToNotifyList(int activityId)
+        {
+            var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
+            var activity = _context.Activities.First(a=>a.Id == activityId);
+            if(currentUser != null && activity != null && activity.CreatedBy == currentUser.Id)
+            {
+                return View(new NotificationList() {ActivityId = activityId });
+            }
+            else
+            {
+                return Redirect("/Home/Index");
+            }
+        }
+        [HttpPost]
+        public IActionResult AddPhoneToNotifyList(NotificationList notification)
+        {
 
+            bool belongsToUser =(_context.AspNetUsers.Where(u => u.PhoneNumber == notification.PhoneNumber) != null);
+             bool alreadyAdded =    (_context.NotificationList.Where(n => n.PhoneNumber == notification.PhoneNumber &&
+                 n.ActivityId == notification.ActivityId) != null);
+            bool isNotUserOrPreAdded = belongsToUser && alreadyAdded;
+            if (isNotUserOrPreAdded)
+            {
+                _context.NotificationList.Add(notification);
+                _context.SaveChanges();
+               return RedirectToAction("Index");
+            }
+            ViewBag.Error = "Phone Number is already added or belongs to a user.";
+            return View(notification);
+        }
         public IActionResult SavedToList(int Id)
         {
-            if (Id != null)
+            if (Id != 0)
             {
                 var currentUser = _context.AspNetUsers.First(c => c.UserName == User.Identity.Name);
                 _context.UserToActivity.Add(new UserToActivity() { ActivityId = Id, UserId = currentUser.Id });
@@ -212,6 +242,21 @@ namespace ActivitiesTaskList.Controllers
                     catch { }
                 }
             }
+            var otherNotifyees = _context.NotificationList.Where(n => n.ActivityId == UsersActivity.Id).ToList();
+            foreach (var number in otherNotifyees)
+            {
+                try
+                {
+                    var message = MessageResource.Create(
+                        body: $"Hello friend! This is a remind that the event: {UsersActivity.Title}, will be taking place on {date}. I hope to see you there! (Please do not repond to this message)",
+                        from: new Twilio.Types.PhoneNumber("+13134665096"),
+                        to: new Twilio.Types.PhoneNumber($"+1{number.PhoneNumber}")
+                    );
+                    Console.WriteLine(message.Sid);
+                }
+                catch { }
+            }
+        
             return RedirectToAction("SavedActivities");
         }
     }
