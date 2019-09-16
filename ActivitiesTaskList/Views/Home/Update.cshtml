@@ -7,7 +7,7 @@
 <h1>Update</h1>
 
 <form asp-controller="Home" asp-action="Update" method="post">
-    Date (@Model.Date.ToString("MM/dd/yyyy"))<input type="date" name="Date" value="@Model.Date.ToString("MM/dd/yyyy")" required />
+    Date: <input type="date" name="Date" value="@Model.Date.ToString("yyyy-MM-dd")" />
     Name of event: <input type="text" name="Title" value="@Model.Title" required />
     Description: <input type="text" name="Description" value="@Model.Description" required />
     Location: <input type="text" name="Location" value=@Model.Location required />
