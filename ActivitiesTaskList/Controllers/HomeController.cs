@@ -71,11 +71,15 @@ namespace ActivitiesTaskList.Controllers
 
         public IActionResult DeleteActivity(int Id)
         {
-            var found = _context.Activities.Find(Id);
+            var found = _context.Activities.First(a=>a.Id == Id);
             var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
-
+            
             if (found.CreatedBy == currentUser.Id)
             {
+                foreach (var relation in _context.UserToActivity.Where(r => r.ActivityId == found.Id))
+                {
+                    _context.UserToActivity.Remove(relation);
+                }
                 _context.Activities.Remove(found);
                 _context.SaveChanges();
             }
