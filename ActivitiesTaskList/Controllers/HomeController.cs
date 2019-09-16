@@ -160,25 +160,37 @@ namespace ActivitiesTaskList.Controllers
         }
         public IActionResult SendReminder(Activities UsersActivity)//should also bring in a list of all the users that have favorited this event
         {
-            List<UserToActivity> favoriteUsers = new List<UserToActivity> { };//this is a placeholder for the list of users that have favorited this event
             string date = UsersActivity.Date.ToString();
 
+            var UsersThatLikeActivity = _context.UserToActivity.Where(x => x.ActivityId == UsersActivity.Id);
+            List<AspNetUsers> userList = _context.AspNetUsers.ToList();
+            List<AspNetUsers> favList = new List<AspNetUsers> { };
+            foreach(var favUser in UsersThatLikeActivity)
+            {
+                var userId = favUser.Id.ToString();
+                foreach(var user in userList)
+                {
+                    if(user.Id == userId)
+                    {
+                        favList.Add(user);
+                    }
+                }
+            }
             const string accountSid = "ACa789c5fec567f04e0ab72683617dd828";
             const string authToken = "4d148282e12613c36b8500584f592976";
 
             TwilioClient.Init(accountSid, authToken);
-            //use a foreach statement to get multiple users
-            foreach(var user in favoriteUsers)
+            foreach(var user in favList)
             {
                 var message = MessageResource.Create(
                     body: $"Hello friend! This is a remind that the event: {UsersActivity.Title}, will be taking place on {date}. I hope to see you there! (Please do not repond to this message)",
                     from: new Twilio.Types.PhoneNumber("+13134665096"),
-                    to: new Twilio.Types.PhoneNumber("+12485080655")//this will need to be "+1{AspNetUsers.phonenumber}" but will need to identify the user ahead of time
+                    to: new Twilio.Types.PhoneNumber($"+1{user.PhoneNumber}")
                 );
                 Console.WriteLine(message.Sid);
             }
 
-            return RedirectToAction("");
+            return RedirectToAction("SavedActivities");
         }
     }
 }
