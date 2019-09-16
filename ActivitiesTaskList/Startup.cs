@@ -22,6 +22,7 @@ namespace ActivitiesTaskList
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -42,14 +43,16 @@ namespace ActivitiesTaskList
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+           
             /*services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();*/
             //Above Block is replaced by below block to allow changes in Identity
             services.AddIdentity<IdentityUser, IdentityRole>()
+                
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
-          
+         
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>
@@ -100,4 +103,6 @@ namespace ActivitiesTaskList
             });
         }
     }
+
+
 }

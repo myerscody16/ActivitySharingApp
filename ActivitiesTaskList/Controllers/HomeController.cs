@@ -181,8 +181,9 @@ namespace ActivitiesTaskList.Controllers
                     }
                 }
             }
-            const string accountSid = "ACa789c5fec567f04e0ab72683617dd828";
-            const string authToken = "4d148282e12613c36b8500584f592976";
+            
+             string accountSid = _configuration.GetSection("TwilioAccountDetails")["AccountSid"];
+             string authToken = _configuration.GetSection("TwilioAccountDetails")["AuthToken"];
 
             TwilioClient.Init(accountSid, authToken);
             foreach(var user in favList)
