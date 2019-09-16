@@ -36,7 +36,7 @@
                 </td>
                 <td>
 
-                    <a asp-action="AddFriend" asp-route-id="@item.UserToUserFriend">Add Friend</a>
+                    <a asp-action="AddFriend" asp-route-friendId="@item.Id">Add Friend</a>
                     <form type="hidden" asp-controller="Friend" asp-action="AddFriend" method="post">
                         <input type="hidden" name="Date" required />
                         <input type="hidden" name="Title" required />

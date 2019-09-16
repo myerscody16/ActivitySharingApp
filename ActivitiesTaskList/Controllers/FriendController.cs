@@ -36,10 +36,11 @@ namespace ActivitiesTaskList.Controllers
         //    }
         //    return View("PLACEHOLDER", users);
         //}
-        public IActionResult AddFriend(AspNetUsers friend)
+        public IActionResult AddFriend(string friendId)
         {
             //Finds Both Users
             var currentUser = _context.AspNetUsers.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var friend = _context.AspNetUsers.FirstOrDefault(u => u.Id == friendId);
             //friend = _context.AspNetUsers.First(u => u.Id == friend.ToString());
 
             //if (friend != null)
@@ -48,7 +49,7 @@ namespace ActivitiesTaskList.Controllers
             _context.UserToUser.Add(new UserToUser() { UserId = currentUser.Id, FriendId = friend.Id });
             _context.SaveChanges();
             //}            //Redirect to Index
-            return RedirectToAction("FriendSuggestion");
+            return RedirectToAction("FriendSuggestions");
         }
         public IActionResult RemoveFriend(string friendId)
         {
