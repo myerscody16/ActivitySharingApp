@@ -90,10 +90,12 @@ namespace ActivitiesTaskList.Controllers
 
         public IActionResult SavedToList(int Id)
         {
-            var currentUser = _context.AspNetUsers.First(c => c.UserName == User.Identity.Name);
-            _context.UserToActivity.Add(new UserToActivity() { ActivityId = Id, UserId = currentUser.Id });
-            _context.SaveChanges();
-
+            if (Id != null)
+            {
+                var currentUser = _context.AspNetUsers.First(c => c.UserName == User.Identity.Name);
+                _context.UserToActivity.Add(new UserToActivity() { ActivityId = Id, UserId = currentUser.Id });
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("SavedActivities");
         }
@@ -101,17 +103,24 @@ namespace ActivitiesTaskList.Controllers
         {
             var currentUser = _context.AspNetUsers.First(c => c.UserName == User.Identity.Name);
             var savedActivities = _context.UserToActivity.Where(u => u.UserId == currentUser.Id).ToList();
-            List<Activities> acts = new List<Activities>();
-
-            foreach (var item in savedActivities)
+            if (currentUser != null && savedActivities != null)
             {
-                var act = _context.Activities.First(a => a.Id == item.ActivityId);
-                if (act != null)
+                List<Activities> acts = new List<Activities>();
+
+                foreach (var item in savedActivities)
                 {
-                    acts.Add(act);
+                    var act = _context.Activities.First(a => a.Id == item.ActivityId);
+                    if (act != null)
+                    {
+                        acts.Add(act);
+                    }
                 }
+                return View(acts);
             }
-            return View(acts);
+            else
+            {
+                return View("Index");
+            }
         }
         public IActionResult DeleteActivityFromUser(int id)
         {
@@ -141,19 +150,21 @@ namespace ActivitiesTaskList.Controllers
         [HttpPost]
         public IActionResult Update(Activities updatedActivity)
         {
-            var found = _context.Activities.Find(updatedActivity.Id);
-            if (ModelState.IsValid)
+            if (updatedActivity.Id != null)
             {
-                found.Title = updatedActivity.Title;
-                found.Location = updatedActivity.Location;
-                found.Date = updatedActivity.Date;
-                found.Cost = updatedActivity.Cost;
-                found.Description = updatedActivity.Description;
-                _context.Entry(found).State = EntityState.Modified;
-                _context.Update(found);
-                _context.SaveChanges();
+                var found = _context.Activities.Find(updatedActivity.Id);
+                if (ModelState.IsValid)
+                {
+                    found.Title = updatedActivity.Title;
+                    found.Location = updatedActivity.Location;
+                    found.Date = updatedActivity.Date;
+                    found.Cost = updatedActivity.Cost;
+                    found.Description = updatedActivity.Description;
+                    _context.Entry(found).State = EntityState.Modified;
+                    _context.Update(found);
+                    _context.SaveChanges();
+                }
             }
-
             return RedirectToAction("SavedActivities");
         }
         public IActionResult GetListOfFavoritedUsers(Activities favoriteActivity)
@@ -184,22 +195,23 @@ namespace ActivitiesTaskList.Controllers
             
              string accountSid = _configuration.GetSection("TwilioAccountDetails")["AccountSid"];
              string authToken = _configuration.GetSection("TwilioAccountDetails")["AuthToken"];
-
-            TwilioClient.Init(accountSid, authToken);
-            foreach(var user in favList)
+            if (accountSid != null && authToken != null)
             {
-                try
+                TwilioClient.Init(accountSid, authToken);
+                foreach (var user in favList)
                 {
-                    var message = MessageResource.Create(
-                        body: $"Hello friend! This is a remind that the event: {UsersActivity.Title}, will be taking place on {date}. I hope to see you there! (Please do not repond to this message)",
-                        from: new Twilio.Types.PhoneNumber("+13134665096"),
-                        to: new Twilio.Types.PhoneNumber($"+1{user.PhoneNumber}")
-                    );
-                    Console.WriteLine(message.Sid);
+                    try
+                    {
+                        var message = MessageResource.Create(
+                            body: $"Hello friend! This is a remind that the event: {UsersActivity.Title}, will be taking place on {date}. I hope to see you there! (Please do not repond to this message)",
+                            from: new Twilio.Types.PhoneNumber("+13134665096"),
+                            to: new Twilio.Types.PhoneNumber($"+1{user.PhoneNumber}")
+                        );
+                        Console.WriteLine(message.Sid);
+                    }
+                    catch { }
                 }
-                catch { }
             }
-
             return RedirectToAction("SavedActivities");
         }
     }

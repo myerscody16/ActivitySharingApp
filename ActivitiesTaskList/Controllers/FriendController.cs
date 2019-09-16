@@ -26,13 +26,21 @@ namespace ActivitiesTaskList.Controllers
         public IActionResult ListOfFriends()
         {
             AspNetUsers thisUser = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First();
-            var friendList = _context.UserToUser.Where(u => u.UserId == thisUser.Id).ToList();
+            var friendList = _context.UserToUser.Where(u => u.UserId == thisUser.Id || u.FriendId == thisUser.Id).ToList();
 
             List<AspNetUsers> users = new List<AspNetUsers>();
             foreach (var friend in friendList)
             {
-                var person = _context.AspNetUsers.Where(u => u.Id == friend.FriendId).First();
-                users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
+                if (thisUser.Id == friend.UserId)
+                {
+                    var person = _context.AspNetUsers.Where(u => u.Id == friend.FriendId).First();
+                    users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
+                }
+                if(thisUser.Id == friend.FriendId)
+                {
+                    var person = _context.AspNetUsers.Where(u => u.Id == friend.UserId).First();
+                    users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
+                }
             }
             return View(users);
         }
@@ -41,14 +49,11 @@ namespace ActivitiesTaskList.Controllers
             //Finds Both Users
             var currentUser = _context.AspNetUsers.FirstOrDefault(u => u.UserName == User.Identity.Name);
             var friend = _context.AspNetUsers.FirstOrDefault(u => u.Id == friendId);
-            //friend = _context.AspNetUsers.First(u => u.Id == friend.ToString());
-
-            //if (friend != null)
-            //{
+            
             //Create User Relation
             _context.UserToUser.Add(new UserToUser() { UserId = currentUser.Id, FriendId = friend.Id });
             _context.SaveChanges();
-            //}            //Redirect to Index
+            //Redirect to Index
             return RedirectToAction("FriendSuggestions");
         }
         public IActionResult RemoveFriend(string friendId)
