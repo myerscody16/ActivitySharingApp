@@ -39,6 +39,12 @@ namespace ActivitiesTaskList.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            //[Required]
+            //[MaxLength(20)]
+            //[MinLength(4)]
+           
+            //[Display(Name = "User Name")]
+            //public string UserName { get; set; }
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -46,6 +52,7 @@ namespace ActivitiesTaskList.Areas.Identity.Pages.Account
 
             [Required]
             [Phone]
+            [Range(10,10)]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
