@@ -109,11 +109,11 @@ namespace ActivitiesTaskList.Controllers
             }
             return View(acts);
         }
-        public IActionResult DeleteActivityFromUser(int Id)
+        public IActionResult DeleteActivityFromUser(int id)
         {
-            var found = _context.UserToActivity.First(u => u.ActivityId == Id);
             var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
-            if (found.ActivityId == Id && found.UserId == currentUser.Id)
+            var found = _context.UserToActivity.First(u => u.ActivityId == id&&u.UserId==currentUser.Id);
+            if (found.ActivityId == id && found.UserId == currentUser.Id)
             {
                 _context.UserToActivity.Remove(found);
                 _context.SaveChanges();
