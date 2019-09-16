@@ -7,6 +7,7 @@ namespace ActivitiesTaskList.Models
     {
         public Activities()
         {
+            NotificationList = new HashSet<NotificationList>();
             UserToActivity = new HashSet<UserToActivity>();
         }
 
@@ -19,6 +20,7 @@ namespace ActivitiesTaskList.Models
         public string CreatedBy { get; set; }
 
         public virtual AspNetUsers CreatedByNavigation { get; set; }
+        public virtual ICollection<NotificationList> NotificationList { get; set; }
         public virtual ICollection<UserToActivity> UserToActivity { get; set; }
     }
 }
