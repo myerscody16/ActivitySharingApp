@@ -23,32 +23,32 @@ namespace ActivitiesTaskList.Controllers
             context.SaveChanges();
             _context = context;
         }
-        public IActionResult Index()
-        {
-            AspNetUsers thisUser = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First();
-            var friendList = _context.UserToUser.Where(u => u.UserId == thisUser.Id).ToList();
+        //public IActionResult Index()
+        //{
+        //    AspNetUsers thisUser = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First();
+        //    var friendList = _context.UserToUser.Where(u => u.UserId == thisUser.Id).ToList();
 
-            List<AspNetUsers> users = new List<AspNetUsers>();
-            foreach (var friend in friendList)
-            {
-                var person = _context.AspNetUsers.Where(u => u.Id == friend.FriendId).First();
-                users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
-            }
-            return View("PLACEHOLDER", users);
-        }
-        public IActionResult AddFriend(string friendId)
+        //    List<AspNetUsers> users = new List<AspNetUsers>();
+        //    foreach (var friend in friendList)
+        //    {
+        //        var person = _context.AspNetUsers.Where(u => u.Id == friend.FriendId).First();
+        //        users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
+        //    }
+        //    return View("PLACEHOLDER", users);
+        //}
+        public IActionResult AddFriend(AspNetUsers friend)
         {
             //Finds Both Users
             var currentUser = _context.AspNetUsers.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var friend = _context.AspNetUsers.First(u => u.Id == friendId);
-            if (friend != null)
-            {
-                //Create User Relation
-                _context.UserToUser.Add(new UserToUser() { UserId = currentUser.Id, FriendId = friend.Id });
-                _context.SaveChanges();
-            }
-            //Redirect to Index
-            return RedirectToAction("PLACEHOLDER");
+            //friend = _context.AspNetUsers.First(u => u.Id == friend.ToString());
+
+            //if (friend != null)
+            //{
+            //Create User Relation
+            _context.UserToUser.Add(new UserToUser() { UserId = currentUser.Id, FriendId = friend.Id });
+            _context.SaveChanges();
+            //}            //Redirect to Index
+            return RedirectToAction("FriendSuggestion");
         }
         public IActionResult RemoveFriend(string friendId)
         {
@@ -92,7 +92,7 @@ namespace ActivitiesTaskList.Controllers
             {
                 if (relation.UserId == currentUser.Id)
                 {
-                    var activity = _context.Activities.First(a => a.Id == relation.Id);
+                    var activity = _context.Activities.First(a => a.Id == relation.ActivityId);
                     if (!userFavorites.Contains(activity) && activity != null)
                     {
                         userFavorites.Add(activity);
@@ -121,7 +121,7 @@ namespace ActivitiesTaskList.Controllers
         {
             List<AspNetUsers> users = SuggestFriends();
 
-            return View("PLACEHOLDER", users);
+            return View("FriendSuggestions", users);
         }
     }
 }

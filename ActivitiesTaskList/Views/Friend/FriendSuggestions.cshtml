@@ -1,0 +1,60 @@
+﻿
+
+@model IEnumerable<ActivitiesTaskList.Models.AspNetUsers>
+
+@{
+    ViewData["Title"] = "FriendSuggestion";
+}
+
+<h1>FriendSuggestion</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ToList())
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+
+                    <a asp-action="AddFriend" asp-route-id="@item.UserToUserFriend">Add Friend</a>
+                    <form type="hidden" asp-controller="Friend" asp-action="AddFriend" method="post">
+                        <input type="hidden" name="Date" required />
+                        <input type="hidden" name="Title" required />
+                        <input type="submit" placeholder="Add Friend" />
+                    </form>
+
+                    @*@Html.ActionLink("Add Friend", "AddFriend", "Friend", @item);*@
+
+                    |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @if (item.UserToUserFriend == item)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
