@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ActivitiesTaskList.Models.AspNetUsers>
+
+@{
+    ViewData["Title"] = "ListOfFriends";
+}
+
+<h1>ListOfFriends</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                <a asp-action="RemoveFriend" asp-route-friendId="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

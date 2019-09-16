@@ -23,19 +23,19 @@ namespace ActivitiesTaskList.Controllers
             context.SaveChanges();
             _context = context;
         }
-        //public IActionResult Index()
-        //{
-        //    AspNetUsers thisUser = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First();
-        //    var friendList = _context.UserToUser.Where(u => u.UserId == thisUser.Id).ToList();
+        public IActionResult ListOfFriends()
+        {
+            AspNetUsers thisUser = _context.AspNetUsers.Where(u => u.UserName == User.Identity.Name).First();
+            var friendList = _context.UserToUser.Where(u => u.UserId == thisUser.Id).ToList();
 
-        //    List<AspNetUsers> users = new List<AspNetUsers>();
-        //    foreach (var friend in friendList)
-        //    {
-        //        var person = _context.AspNetUsers.Where(u => u.Id == friend.FriendId).First();
-        //        users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
-        //    }
-        //    return View("PLACEHOLDER", users);
-        //}
+            List<AspNetUsers> users = new List<AspNetUsers>();
+            foreach (var friend in friendList)
+            {
+                var person = _context.AspNetUsers.Where(u => u.Id == friend.FriendId).First();
+                users.Add(new AspNetUsers() { Id = person.Id, Email = person.Email, UserName = person.UserName });
+            }
+            return View(users);
+        }
         public IActionResult AddFriend(string friendId)
         {
             //Finds Both Users
@@ -69,7 +69,7 @@ namespace ActivitiesTaskList.Controllers
             }
 
             _context.SaveChanges();
-            return RedirectToAction("PLACEHOLDER");
+            return RedirectToAction("ListOfFriends");
 
         }
         internal List<AspNetUsers> SuggestFriends()
