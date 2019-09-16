@@ -158,8 +158,9 @@ namespace ActivitiesTaskList.Controllers
 
             return View(UsersThatLikeActivity);
         }
-        public IActionResult SendReminder(Activities UsersActivity)//should also bring in a list of all the users that have favorited this event
+        public IActionResult SendReminder(int id)//should also bring in a list of all the users that have favorited this event
         {
+            var UsersActivity = _context.Activities.First(a => a.Id == id);
             string date = UsersActivity.Date.ToString();
 
             var UsersThatLikeActivity = _context.UserToActivity.Where(x => x.ActivityId == UsersActivity.Id);
@@ -167,7 +168,7 @@ namespace ActivitiesTaskList.Controllers
             List<AspNetUsers> favList = new List<AspNetUsers> { };
             foreach(var favUser in UsersThatLikeActivity)
             {
-                var userId = favUser.Id.ToString();
+                var userId = favUser.UserId.ToString();
                 foreach(var user in userList)
                 {
                     if(user.Id == userId)
@@ -182,12 +183,16 @@ namespace ActivitiesTaskList.Controllers
             TwilioClient.Init(accountSid, authToken);
             foreach(var user in favList)
             {
-                var message = MessageResource.Create(
-                    body: $"Hello friend! This is a remind that the event: {UsersActivity.Title}, will be taking place on {date}. I hope to see you there! (Please do not repond to this message)",
-                    from: new Twilio.Types.PhoneNumber("+13134665096"),
-                    to: new Twilio.Types.PhoneNumber($"+1{user.PhoneNumber}")
-                );
-                Console.WriteLine(message.Sid);
+                try
+                {
+                    var message = MessageResource.Create(
+                        body: $"Hello friend! This is a remind that the event: {UsersActivity.Title}, will be taking place on {date}. I hope to see you there! (Please do not repond to this message)",
+                        from: new Twilio.Types.PhoneNumber("+13134665096"),
+                        to: new Twilio.Types.PhoneNumber($"+1{user.PhoneNumber}")
+                    );
+                    Console.WriteLine(message.Sid);
+                }
+                catch { }
             }
 
             return RedirectToAction("SavedActivities");
