@@ -26,7 +26,7 @@ namespace ActivitiesTaskList.Controllers
         {
             _context = context;
             _configuration = configuration;
-            apikey = _configuration.GetSection("Appconfiguration")["APIkeyvalue"];
+            apikey = "";
             listActivities = _context.Activities.ToList();
         }
         #region Crud
@@ -34,6 +34,13 @@ namespace ActivitiesTaskList.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public IActionResult Results(string query)
