@@ -1,0 +1,44 @@
+﻿@model ActivitiesTaskList.Models.Messages
+
+@{
+    ViewData["Title"] = "DirectMessage";
+    string error = ViewBag.Error;
+}
+
+<h1>Direct Message</h1>
+
+<h4>Messages</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="DirectMessage">
+            @if(error != null)
+            {
+                <div class="text-danger">
+                    <p>@error</p>
+                </div>
+            }
+            <div class="form-group">
+                <input asp-for="@Model.To" class="form-control" hidden/>
+            </div>
+            <div class="form-group">
+          
+                <input asp-for="@Model.From" class="form-control" hidden/>
+           
+            </div>
+            <div class="form-group">
+                <label asp-for="Body" class="control-label"></label>
+                <input asp-for="@Model.Body" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
