@@ -52,7 +52,8 @@ namespace ActivitiesTaskList.Areas.Identity.Pages.Account
 
             [Required]
             [Phone]
-            [Range(10,10)]
+            [MinLength(10)]
+            [MaxLength(10)]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
