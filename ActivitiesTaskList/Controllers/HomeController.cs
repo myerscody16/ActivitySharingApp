@@ -197,6 +197,43 @@ namespace ActivitiesTaskList.Controllers
             }
             return RedirectToAction("SavedActivities");
         }
+        [HttpGet]
+        public IActionResult DirectMessage(string friendId)
+        {
+            var friend = _context.AspNetUsers.First(u => u.Id == friendId);
+            var currentUser = _context.AspNetUsers.First(u => u.UserName == User.Identity.Name);
+            if(currentUser != null && friend != null)
+            {
+                return View(new Messages() { To = friend.PhoneNumber });
+            }
+            return Redirect("/Home/ListOfFriends");
+            
+        }
+        [HttpPost]
+        public IActionResult DirectMessage(Messages messages)
+        {
+            try
+            {
+                string accountSid = _configuration.GetSection("TwilioAccountDetails")["AccountSid"];
+                string authToken = _configuration.GetSection("TwilioAccountDetails")["AuthToken"];
+                if (accountSid != null && authToken != null)
+                {
+                        TwilioClient.Init(accountSid, authToken);
+                        var message = MessageResource.Create(
+                        body: $"{messages.Body} (Do not reply)",
+                        from: new Twilio.Types.PhoneNumber("+13134665096"),
+                        to: new Twilio.Types.PhoneNumber($"+1{messages.To}")
+                    );
+                    Console.WriteLine(message.Sid);
+                }
+                return Redirect("/Friend/ListOfFriends");
+            }
+            catch
+            {
+                ViewBag.Error = "Message could not be sent.";
+                return View(messages);
+            }
+        }
         public IActionResult GetListOfFavoritedUsers(Activities favoriteActivity)
         {
             var UsersThatLikeActivity = _context.UserToActivity.Where(x => x.ActivityId == favoriteActivity.Id);

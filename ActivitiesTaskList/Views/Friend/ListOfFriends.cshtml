@@ -30,6 +30,9 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
+                <a asp-controller="Home" asp-action="DirectMessage" asp-route-friendId="@item.Id">Direct Message</a>
+            </td>
+            <td>
                 <a asp-action="RemoveFriend" asp-route-friendId="@item.Id">Delete</a>
             </td>
         </tr>
