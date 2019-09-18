@@ -2,8 +2,31 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model List<Activities>
 <form asp-action="Results" asp-controller="Home" method="post">
     Search: <input type="text" name="query" value="" />
     <input type="submit" value="Search" />
 </form>
 
+
+    <div class="row" style="padding-top:10em">
+        @foreach (var item in Model)
+        {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="imgBox">
+                    <div class="bark">
+                        <img src="https://images.unsplash.com/photo-1520513228682-0ee5b2e2e3c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=657&q=80">
+                    </div>
+                    <div class="color1">
+                        <p>@item.Date</p>
+                        <br />
+                        <div><p>@item.Title</p></div>
+                        <h4 class="color2 margin">
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
