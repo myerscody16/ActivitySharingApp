@@ -12,6 +12,8 @@ using System.Net.Http;
 using Microsoft.EntityFrameworkCore;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
+using System.Globalization;
+using System.Threading;
 
 namespace ActivitiesTaskList.Controllers
 {
@@ -46,11 +48,15 @@ namespace ActivitiesTaskList.Controllers
         public IActionResult Results(string query)
 
         {
-
+          if(query == ""|| query == " "|| query == null)
+            {
+                return RedirectToAction("Index");
+            }
             var result = new List<Activities>();
             foreach (var activity in listActivities)
             {
-                if (activity.Title.ToLower().Contains(query.ToLower()) && !result.Contains(activity))
+                var val = CompareStrings(query, activity.Title);
+                if (val && !result.Contains(activity))
                 {
                     result.Add(activity);
                 }
@@ -302,6 +308,33 @@ namespace ActivitiesTaskList.Controllers
             }
         
             return RedirectToAction("SavedActivities");
+        }
+        public static bool CompareStrings(string query, string compared)
+        {
+            var arrayQ = query.ToLower().ToCharArray();
+            var arrayC = compared.ToLower().ToCharArray();
+            double matches = 0;
+            foreach(var letterQ in arrayQ)
+            {
+                foreach(var letterC in arrayC)
+                {
+                    if (letterC == letterQ)
+                    {
+                        matches++;
+                    }
+                }
+            }
+            double minMatch = ((double)compared.Length/(double) query.Length);
+            var isPass = (matches / ((double)query.Length/(double)compared.Length) >= minMatch);
+            if (isPass && matches !=0||compared.Contains(query))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }
