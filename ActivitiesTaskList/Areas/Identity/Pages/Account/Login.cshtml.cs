@@ -37,7 +37,9 @@ namespace ActivitiesTaskList.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+            [MaxLength(20)]
+            [MinLength(8)]
+            [Display(Name = "User Name")]
             public string Email { get; set; }
 
             [Required]
