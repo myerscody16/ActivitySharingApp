@@ -28,13 +28,12 @@ namespace ActivitiesTaskList.Controllers
         {
             _context = context;
             _configuration = configuration;
-            apikey = "";
-            listActivities = _context.Activities.ToList();
         }
         #region Crud
         [AllowAnonymous]
         public IActionResult Index()
         {
+            var listActivities = _context.Activities.ToList();
             return View(listActivities);
         }
 
