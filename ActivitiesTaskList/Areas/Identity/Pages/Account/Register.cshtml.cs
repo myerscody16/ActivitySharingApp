@@ -46,8 +46,9 @@ namespace ActivitiesTaskList.Areas.Identity.Pages.Account
             //[Display(Name = "User Name")]
             //public string UserName { get; set; }
             [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [MaxLength(20)]
+            [MinLength(8)]
+            [Display(Name = "User Name")]
             public string Email { get; set; }
 
             [Required]
