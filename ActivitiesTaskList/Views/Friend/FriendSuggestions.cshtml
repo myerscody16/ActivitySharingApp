@@ -8,9 +8,6 @@
 
 <h1>FriendSuggestion</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -37,13 +34,6 @@
                 <td>
 
                     <a asp-action="AddFriend" asp-route-friendId="@item.Id">Add Friend</a>
-                    <form type="hidden" asp-controller="Friend" asp-action="AddFriend" method="post">
-                        <input type="hidden" name="Date" required />
-                        <input type="hidden" name="Title" required />
-                        <input type="submit" placeholder="Add Friend" />
-                    </form>
-
-                    @*@Html.ActionLink("Add Friend", "AddFriend", "Friend", @item);*@
 
                     |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

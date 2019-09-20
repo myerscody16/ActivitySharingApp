@@ -20,7 +20,6 @@ namespace ActivitiesTaskList.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        List<Activities> listActivities;
         private readonly string apikey;
         private readonly SharedActivityDbContext _context;
         private readonly IConfiguration _configuration;
@@ -45,17 +44,12 @@ namespace ActivitiesTaskList.Controllers
         }
 
         public IActionResult Results(string query)
-
         {
-          if(query == ""|| query == " "|| query == null)
+            var listActivities = _context.Activities.ToList();
+            var result = new List<Activities> { };
+            foreach(var activity in listActivities)
             {
-                return RedirectToAction("Index");
-            }
-            var result = new List<Activities>();
-            foreach (var activity in listActivities)
-            {
-                var val = CompareStrings(query, activity.Title);
-                if (val && !result.Contains(activity))
+                if(activity.Title.ToLower().Contains(query.ToLower()) && !result.Contains(activity))
                 {
                     result.Add(activity);
                 }
