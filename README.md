@@ -10,8 +10,6 @@ This project was a group effort that resulted in a full-stack web-application th
 ***
 A list of technologies used within the project:
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15): Version 18.9.1
-* [Technology name](https://example.com): Version 2.34
-* [Library name](https://example.com): Version 1234
 ## Installation
 ***
 To run this application, first a database needs to be set up. This can be done by opening up SQL Server Management Studio and running the queries in the SQLQUERY1.sql file. The code takes care of the rest of the dependancies.
